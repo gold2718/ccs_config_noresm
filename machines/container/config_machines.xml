@@ -1,10 +1,11 @@
   <machine MACH="container">
     <DESC>
-      Containerized development environment (Docker/Singularity) for CESM w/ GNU compilers
+    Containerized development environment (Docker/Singularity) for
+    NorESM w/ GNU compilers
     </DESC>
     <OS>LINUX</OS>
     <COMPILERS>gnu</COMPILERS>
-    <MPILIBS>mpich</MPILIBS>
+    <MPILIBS>openmpi</MPILIBS>
     <CIME_OUTPUT_ROOT>$ENV{HOME}/scratch</CIME_OUTPUT_ROOT>
     <DIN_LOC_ROOT>$ENV{CESMDATAROOT}/inputdata</DIN_LOC_ROOT>
     <DIN_LOC_ROOT_CLMFORC>$DIN_LOC_ROOT/atm/datm7</DIN_LOC_ROOT_CLMFORC>
@@ -16,7 +17,7 @@
     <MAX_TASKS_PER_NODE>4</MAX_TASKS_PER_NODE>
     <MAX_MPITASKS_PER_NODE>4</MAX_MPITASKS_PER_NODE>
     <PROJECT_REQUIRED>FALSE</PROJECT_REQUIRED>
-    <mpirun mpilib="mpich">
+    <mpirun mpilib="openmpi">
       <executable>mpiexec</executable>
       <arguments>
         <arg name="anum_tasks"> -n {{ total_tasks }}</arg>
@@ -25,13 +26,15 @@
     <module_system type="none">
     </module_system>
     <environment_variables>
-      <env name="NETCDF_PATH">/usr/local</env>
-      <env name="PNETCDF_PATH">/usr/local</env>
-      <env name="FPATH">/usr/lib64</env>
-      <env name="CPATH">/usr/lib64</env>
+      <env name="ESMFMKFILE">$ENV{EBROOTESMF}/lib/esmf.mk</env>
+      <env name="ESMF_RUNTIME_PROFILE">ON</env>
+      <env name="ESMF_RUNTIME_PROFILE_OUTPUT">SUMMARY</env>
+      <env name="NETCDF_C_PATH">$ENV{NETCDF_C_ROOT}</env>
+      <env name="NETCDF_FORTRAN_PATH">$ENV{NETCDF_FORTRAN_ROOT}</env>
+      <env name="PIO_TYPENAME_VALID_VALUES">netcdf,pnetcdf,netcdf4p,netcdf4c</env>
+      <env name="PNETCDF_PATH">$ENV{PARALLEL_NETCDF_ROOT}</env>
     </environment_variables>
     <resource_limits>
       <resource name="RLIMIT_STACK">-1</resource>
     </resource_limits>
   </machine>
-

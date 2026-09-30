@@ -1,7 +1,12 @@
 if (COMP_NAME STREQUAL gptl)
   string(APPEND CPPDEFS " -DHAVE_NANOTIME -DBIT64 -DHAVE_VPRINTF -DHAVE_BACKTRACE -DHAVE_SLASHPROC -DHAVE_COMM_F2C -DHAVE_TIMES -DHAVE_GETTIMEOFDAY")
 endif()
-set(NETCDF_PATH "/usr/local")
-set(PNETCDF_PATH "/usr/local")
+
+set(NetCDF_C_PATH "$ENV{NETCDF_C_ROOT}")
+set(NetCDF_Fortran_PATH "$ENV{NETCDF_FORTRAN_ROOT}")
+
+# Add our cmake finder scripts
+list (APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+
 set(LDFLAGS "")
-string(APPEND SLIBS " -lnetcdf -lnetcdff -llapack -lblas")
+string(APPEND SLIBS " -L$ENV{NETCDF_FORTRAN_PATH}/lib -lnetcdff -L$ENV{NETCDF_C_PATH}/lib -lnetcdf")
